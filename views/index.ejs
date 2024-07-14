@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="container">
+        <h1>Today's List</h1>
+        <div class="list-box">
+            <% if (listContent.length != 0) { %>
+                <% listContent.forEach(list => { %>
+                    <% const index = Math.floor(Math.random()*6) %>
+                    <div id="b1" class="b1c" style="background-color: <%= boxColor[index] %>;">
+
+                        <form action="/delete" method="post" id="checkbox">
+                            <input type="checkbox" class="checkbox" onchange="this.form.submit()" name="deleteItemId" value="<%= list.id %>">
+                        </form>
+
+                        <p id="work<%= list.id %>" style="color: <%= textColor[index] %>;"><%= list.work %></p>
+
+                        <form action="/edit" class="editing" id="editing-form<%= list.id %>" method="post">
+                            <input type="hidden" name="updatedItemId" value="<%= list.id %>">
+                            <input type="text" id="input<%= list.id %>" name="updatedItemWork" value="<%= list.work %>" hidden="true" style="border-bottom: <%= textColor[index] %> 2px solid;">
+                            <button id="done<%=list.id%>" type="submit" hidden><i class="ri-check-line ri-lg done"></i></button>
+                        </form>
+
+                        <button id="edit<%=list.id%>" onclick="handler('<%=list.id%>')"><i class="ri-edit-line ri-lg edit"></i></button>
+                    </div>
+                <% }) %>
+            <% } %>
+            <div id="b5">
+                <form action="/add" method="post" autocomplete="off">
+                    <input type="text" placeholder="New Item" name="work" class="newItem" required>
+                    <button><i class="ri-add-circle-fill ri-3x add"></i></button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        //to be added
+        function handler(id) {
+            document.getElementById("work" + id).setAttribute("hidden", true);
+            document.getElementById("edit" + id).setAttribute("hidden", true);
+            document.getElementById("input" + id).removeAttribute("hidden");
+            document.getElementById("done" + id).removeAttribute("hidden");
+            document.getElementById("editing-form" + id).style.width="100%";
+        } 
+
+        document.querySelector(".b1c").style.borderTopLeftRadius="10px";
+        document.querySelector(".b1c").style.borderTopRightRadius="10px";
+        document.querySelector(".list-box").style.borderTopLeftRadius="10px";
+        document.querySelector(".list-box").style.borderTopRightRadius="10px";
+
+    </script>
+</body>
+</html>
